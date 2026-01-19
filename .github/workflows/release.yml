@@ -1,0 +1,36 @@
+name: Build Rime Config Package
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout this repository
+        uses: actions/checkout@v4
+        with:
+          path: this-repo
+          fetch-depth: 1
+
+      - name: Checkout the source repository
+        uses: actions/checkout@v4
+        with:
+          repository: gaboolic/rime-frost
+          path: source-repo
+          fetch-depth: 1
+
+      - name: Merge files from repositories
+        run: |
+          mkdir -p temp
+          cp -r source-repo/* temp/
+          cp -r this-repo/* temp/
+          cd temp
+          zip -r ../release.zip .
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rime-config-package
+          path: release.zip
