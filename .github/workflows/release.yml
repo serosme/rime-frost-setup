@@ -23,14 +23,12 @@ jobs:
 
       - name: Merge files from repositories
         run: |
-          mkdir -p temp
-          cp -r source-repo/* temp/
-          cp -r this-repo/* temp/
-          cd temp
-          zip -r ../release.zip .
+          mkdir -p output
+          cp -r source-repo/* output/
+          cp -r this-repo/* output/
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: rime-config-package
-          path: release.zip
+          path: output/
